@@ -12,14 +12,12 @@ class SignUpUseCase(
         email: String,
         password: String,
         username: String,
-        image: String?,
         position: String
     ): Flow<RequestState<Boolean>> {
         return repository.signUp(
             email,
             password,
             username,
-            image,
             position
         )
     }

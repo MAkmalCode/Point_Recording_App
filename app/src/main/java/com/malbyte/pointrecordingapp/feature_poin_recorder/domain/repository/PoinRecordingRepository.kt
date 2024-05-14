@@ -1,7 +1,6 @@
 package com.malbyte.pointrecordingapp.feature_poin_recorder.domain.repository
 
 import com.malbyte.pointrecordingapp.feature_poin_recorder.data.data_source.local.model.PoinHistory
-import com.malbyte.pointrecordingapp.feature_poin_recorder.data.data_source.remote.model.Account
 import com.malbyte.pointrecordingapp.feature_poin_recorder.data.data_source.remote.model.Employee
 import com.rmaprojects.apirequeststate.RequestState
 import kotlinx.coroutines.flow.Flow
@@ -18,7 +17,6 @@ interface PoinRecordingRepository {
         email: String,
         password: String,
         username: String,
-        image: String?,
         position: String
     ): Flow<RequestState<Boolean>>
     fun signIn(

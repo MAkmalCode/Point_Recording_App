@@ -160,7 +160,6 @@ fun RegisterScreen(
                         password = passState,
                         username = userNameState,
                         position = positionState,
-                        image = null
                     )
                 }
             ) {

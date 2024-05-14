@@ -31,7 +31,6 @@ class RegisterViewModel @Inject constructor(
         email: String,
         password: String,
         username: String,
-        image: String?,
         position: String
     ) {
         viewModelScope.launch {
@@ -40,7 +39,6 @@ class RegisterViewModel @Inject constructor(
                     email,
                     password,
                     username,
-                    image,
                     position
                 )
             )

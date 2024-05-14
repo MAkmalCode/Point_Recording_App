@@ -10,5 +10,4 @@ data class Account (
     @SerialName("position") val position: String,
     @SerialName("poin") val poin: Int,
     @SerialName("created_at") val createdAt: String,
-    @SerialName("image") val image: String? = null
 )

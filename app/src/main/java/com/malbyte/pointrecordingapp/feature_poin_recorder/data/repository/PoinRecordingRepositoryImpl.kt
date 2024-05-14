@@ -11,10 +11,6 @@ import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.gotrue.auth
 import io.github.jan.supabase.gotrue.providers.builtin.Email
 import io.github.jan.supabase.postgrest.from
-import io.github.jan.supabase.postgrest.postgrest
-import io.github.jan.supabase.postgrest.query.Columns
-import io.github.jan.supabase.postgrest.query.filter.FilterOperation
-import io.github.jan.supabase.postgrest.query.filter.FilterOperator
 import io.github.jan.supabase.realtime.channel
 import io.github.jan.supabase.realtime.postgresListDataFlow
 import io.github.jan.supabase.realtime.realtime
@@ -117,7 +113,6 @@ class PoinRecordingRepositoryImpl(
         email: String,
         password: String,
         username: String,
-        image: String?,
         position: String
     ): Flow<RequestState<Boolean>> = flow {
         try {
@@ -127,7 +122,6 @@ class PoinRecordingRepositoryImpl(
                 data = buildJsonObject {
                     put("username", username)
                     put("position", position)
-                    put("image", image)
                 }
             }
             emit(RequestState.Success(true))
@@ -155,7 +149,6 @@ class PoinRecordingRepositoryImpl(
                 this.username = publicUser.username
                 this.position = publicUser.position
                 this.poin = publicUser.poin
-                this.image = publicUser.image
                 this.id = publicUser.id
             }
             emit(RequestState.Success(true))

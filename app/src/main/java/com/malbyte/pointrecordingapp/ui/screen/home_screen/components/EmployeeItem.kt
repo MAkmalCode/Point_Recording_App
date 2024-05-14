@@ -53,16 +53,18 @@ fun EmployeeItem(
                 .fillMaxWidth()
         ) {
             Box(contentAlignment = Alignment.TopEnd) {
-                Image(
-                    painter = painterResource(
-                        id = R.drawable.ic_launcher_background
-                    ),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(120.dp),
-                    contentScale = ContentScale.Crop,
-                    contentDescription = ""
-                )
+                Box() {
+                    Image(
+                        painter = painterResource(
+                            id = R.drawable.ic_launcher_background
+                        ),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(120.dp),
+                        contentScale = ContentScale.Crop,
+                        contentDescription = ""
+                    )
+                }
                 IconButton(
                     modifier = Modifier
                         .padding(10.dp)
@@ -99,7 +101,10 @@ fun EmployeeItem(
                     text = "Point: $employeePoin",
                     fontSize = 11.sp,
                     modifier = Modifier
-                        .background(color = MaterialTheme.colorScheme.surfaceVariant, shape = RoundedCornerShape(5.dp))
+                        .background(
+                            color = MaterialTheme.colorScheme.surfaceVariant,
+                            shape = RoundedCornerShape(5.dp)
+                        )
                         .padding(start = 10.dp, top = 5.dp, bottom = 5.dp, end = 60.dp),
                     color = MaterialTheme.colorScheme.onSurfaceVariant
 
