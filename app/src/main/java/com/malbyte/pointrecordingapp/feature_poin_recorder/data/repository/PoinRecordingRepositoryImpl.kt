@@ -57,10 +57,16 @@ class PoinRecordingRepositoryImpl(
 
     override fun updatePoinAccount(id: String, poin: Int): Flow<RequestState<Boolean>> {
         return flow {
+            client.auth.importAuthToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN2anphb2J3dnhoZ3VkanFjcG9qIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTcxMTQyMjU4MCwiZXhwIjoyMDI2OTk4NTgwfQ.uKg8R0Aez9oYoTnu2ZS5CBrf-nayrUnCoZ6CKBhzYIM")
             try {
-                client.auth.updateUser {
-                    data = buildJsonObject {
-                        put("poin", poin)
+//                client.auth.updateUser {
+//                    data = buildJsonObject {
+//                        put("poin", poin)
+//                    }
+//                }
+                client.auth.admin.updateUserById(uid = id) {
+                    this.userMetadata = buildJsonObject {
+                        put("key", "value")
                     }
                 }
                 emit(RequestState.Success(true))
@@ -154,15 +160,6 @@ class PoinRecordingRepositoryImpl(
         position: String
     ): Flow<RequestState<Boolean>> = flow {
         try {
-//            client.auth.signUpWith(Email) {
-//                this.email = email
-//                this.password = password
-//                data = buildJsonObject {
-//                    put("username", username)
-//                    put("position", position)
-//                    put("poin", 0)
-//                }
-//            }
             apiService.createUser(
                 buildJsonObject {
                     put("email", email)
@@ -170,7 +167,7 @@ class PoinRecordingRepositoryImpl(
                     put("data", buildJsonObject {
                         put("username", username)
                         put("position", position)
-                        put("poin", 0.toInt())
+                        put("poin", 0)
                     })
                 }
             )
