@@ -119,6 +119,13 @@ dependencies {
     implementation("com.chibatching.kotpref:kotpref:2.13.1")
     implementation("com.chibatching.kotpref:initializer:2.13.1")
 
+    // ktor
+    implementation("io.ktor:ktor-client-serialization:2.3.10")
+    implementation("io.ktor:ktor-client-core:2.3.10")
+
+    // retrofit
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation ("com.squareup.retrofit2:converter-gson:2.11.0")
 }
 
 kapt {

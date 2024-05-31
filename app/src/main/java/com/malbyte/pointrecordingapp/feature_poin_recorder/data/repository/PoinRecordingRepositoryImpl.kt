@@ -3,6 +3,7 @@ package com.malbyte.pointrecordingapp.feature_poin_recorder.data.repository
 import com.malbyte.pointrecordingapp.feature_poin_recorder.data.data_source.local.HistoryDao
 import com.malbyte.pointrecordingapp.feature_poin_recorder.data.data_source.local.LocalUser
 import com.malbyte.pointrecordingapp.feature_poin_recorder.data.data_source.local.model.PoinHistory
+import com.malbyte.pointrecordingapp.feature_poin_recorder.data.data_source.remote.ApiService
 import com.malbyte.pointrecordingapp.feature_poin_recorder.data.data_source.remote.model.Account
 import com.malbyte.pointrecordingapp.feature_poin_recorder.data.data_source.remote.model.Employee
 import com.malbyte.pointrecordingapp.feature_poin_recorder.domain.repository.PoinRecordingRepository
@@ -23,7 +24,8 @@ import kotlinx.serialization.json.put
 
 class PoinRecordingRepositoryImpl(
     private val client: SupabaseClient,
-    private val historyDao: HistoryDao
+    private val historyDao: HistoryDao,
+    private val apiService: ApiService
 ) : PoinRecordingRepository {
 
     private val employeeChannel = client.channel("employee")
@@ -143,6 +145,8 @@ class PoinRecordingRepositoryImpl(
         }
     }
 
+
+
     override fun signUp(
         email: String,
         password: String,
@@ -150,15 +154,26 @@ class PoinRecordingRepositoryImpl(
         position: String
     ): Flow<RequestState<Boolean>> = flow {
         try {
-            client.auth.signUpWith(Email) {
-                this.email = email
-                this.password = password
-                data = buildJsonObject {
-                    put("username", username)
-                    put("position", position)
-                    put("poin", 0)
+//            client.auth.signUpWith(Email) {
+//                this.email = email
+//                this.password = password
+//                data = buildJsonObject {
+//                    put("username", username)
+//                    put("position", position)
+//                    put("poin", 0)
+//                }
+//            }
+            apiService.createUser(
+                buildJsonObject {
+                    put("email", email)
+                    put("password", password)
+                    put("data", buildJsonObject {
+                        put("username", username)
+                        put("position", position)
+                        put("poin", 0.toInt())
+                    })
                 }
-            }
+            )
             emit(RequestState.Success(true))
         } catch (e: Exception) {
             emit(RequestState.Error(e.toString()))

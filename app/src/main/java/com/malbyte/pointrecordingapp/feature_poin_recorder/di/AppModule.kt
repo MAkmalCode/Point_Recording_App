@@ -1,7 +1,10 @@
 package com.malbyte.pointrecordingapp.feature_poin_recorder.di
 
 import android.app.Application
+import android.net.sip.SipErrorCode.TIME_OUT
+import android.util.Log
 import com.malbyte.pointrecordingapp.feature_poin_recorder.data.data_source.local.HistoryDatabase
+import com.malbyte.pointrecordingapp.feature_poin_recorder.data.data_source.remote.ApiService
 import com.malbyte.pointrecordingapp.feature_poin_recorder.data.repository.PoinRecordingRepositoryImpl
 import com.malbyte.pointrecordingapp.feature_poin_recorder.domain.repository.PoinRecordingRepository
 import com.malbyte.pointrecordingapp.feature_poin_recorder.domain.use_case.employee_use_case.DeleteEmployeeUseCase
@@ -29,11 +32,34 @@ import io.github.jan.supabase.gotrue.auth
 import io.github.jan.supabase.gotrue.minimalSettings
 import io.github.jan.supabase.postgrest.Postgrest
 import io.github.jan.supabase.realtime.Realtime
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.okhttp.OkHttp
+import io.ktor.client.plugins.DefaultRequest
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.kotlinx.serializer.KotlinxSerializer
+import io.ktor.client.plugins.observer.ResponseObserver
+import io.ktor.client.request.header
+import io.ktor.http.ContentType
+import io.ktor.http.HttpHeaders
+import io.ktor.serialization.kotlinx.json.json
+import kotlinx.serialization.json.Json
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
+
+    @Provides
+    @Singleton
+    fun provideApiService(): ApiService{
+        return Retrofit.Builder()
+            .baseUrl("https://svjzaobwvxhgudjqcpoj.supabase.co/auth/v1/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(ApiService::class.java)
+    }
 
     @Provides
     @Singleton
@@ -56,8 +82,8 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun providePoinRecordRepository(client: SupabaseClient, historyDatabase: HistoryDatabase): PoinRecordingRepository {
-        return PoinRecordingRepositoryImpl(client, historyDatabase.historyDao)
+    fun providePoinRecordRepository(client: SupabaseClient, historyDatabase: HistoryDatabase, apiService: ApiService): PoinRecordingRepository {
+        return PoinRecordingRepositoryImpl(client, historyDatabase.historyDao, apiService)
     }
 
     @Provides
