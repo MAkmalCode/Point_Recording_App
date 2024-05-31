@@ -11,7 +11,10 @@ import com.malbyte.pointrecordingapp.feature_poin_recorder.domain.use_case.histo
 import com.malbyte.pointrecordingapp.feature_poin_recorder.domain.use_case.employee_use_case.InsertEmployeeUseCase
 import com.malbyte.pointrecordingapp.feature_poin_recorder.domain.use_case.history_use_case.InsertHistoryUseCase
 import com.malbyte.pointrecordingapp.feature_poin_recorder.domain.use_case.PoinRecordUseCases
+import com.malbyte.pointrecordingapp.feature_poin_recorder.domain.use_case.account_use_case.DeleteAccountUseCase
+import com.malbyte.pointrecordingapp.feature_poin_recorder.domain.use_case.account_use_case.GetAllAccountUseCase
 import com.malbyte.pointrecordingapp.feature_poin_recorder.domain.use_case.account_use_case.UpdateAccountUseCase
+import com.malbyte.pointrecordingapp.feature_poin_recorder.domain.use_case.account_use_case.UpdatePoinAccountUseCase
 import com.malbyte.pointrecordingapp.feature_poin_recorder.domain.use_case.auth_use_case.SignInUseCase
 import com.malbyte.pointrecordingapp.feature_poin_recorder.domain.use_case.auth_use_case.SignUpUseCase
 import com.malbyte.pointrecordingapp.feature_poin_recorder.domain.use_case.employee_use_case.UpdateEmployeePoinUseCase
@@ -22,6 +25,8 @@ import dagger.hilt.components.SingletonComponent
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.createSupabaseClient
 import io.github.jan.supabase.gotrue.Auth
+import io.github.jan.supabase.gotrue.auth
+import io.github.jan.supabase.gotrue.minimalSettings
 import io.github.jan.supabase.postgrest.Postgrest
 import io.github.jan.supabase.realtime.Realtime
 import javax.inject.Singleton
@@ -68,7 +73,10 @@ object AppModule {
             deleteHistoryUseCase = DeleteHistoryUseCase(repository),
             signUpUseCase = SignUpUseCase(repository),
             signInUseCase = SignInUseCase(repository),
-            updateAccountUseCase = UpdateAccountUseCase(repository)
+            updateAccountUseCase = UpdateAccountUseCase(repository),
+            getAllAccountUseCase = GetAllAccountUseCase(repository),
+            deleteAccountUseCase = DeleteAccountUseCase(repository),
+            updatePoinAccountUseCase = UpdatePoinAccountUseCase(repository)
         )
     }
 }

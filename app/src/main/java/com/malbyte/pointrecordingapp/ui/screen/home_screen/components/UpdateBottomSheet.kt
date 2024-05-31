@@ -87,7 +87,6 @@ fun UpdateBottomSheet(
                     text = "Position   : $position",
                     color = MaterialTheme.colorScheme.onSurface
                 )
-
             }
         }
         Spacer(modifier = Modifier.height(30.dp))

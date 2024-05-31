@@ -1,5 +1,6 @@
 package com.malbyte.pointrecordingapp.ui.screen.auth.login_screen
 
+import android.accounts.Account
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
@@ -43,6 +44,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.malbyte.pointrecordingapp.R
 import com.malbyte.pointrecordingapp.feature_poin_recorder.data.data_source.local.LocalUser
 import com.malbyte.pointrecordingapp.feature_poin_recorder.domain.utils.emailChecker
+import com.malbyte.pointrecordingapp.ui.screen.destinations.AccountScreenDestination
 import com.malbyte.pointrecordingapp.ui.screen.destinations.HomeScreenDestination
 import com.malbyte.pointrecordingapp.ui.screen.destinations.LoginScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
@@ -70,10 +72,10 @@ fun LoginScreen(
 
     val loginState by loginViewModel.loginState.collectAsStateWithLifecycle()
 
-    Scaffold {
+    Scaffold { innerPadding ->
         Column(
             modifier = Modifier
-                .padding(it)
+                .padding(innerPadding)
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.primary),
             verticalArrangement = Arrangement.Center,
@@ -183,7 +185,7 @@ fun LoginScreen(
                 onLoading = { /*TODO*/ },
                 onSuccess = {
                     Toast.makeText(context, "Sign In Success", Toast.LENGTH_SHORT).show()
-                    navigator.navigate(HomeScreenDestination) {
+                    navigator.navigate(if (LocalUser.position == "Manager") HomeScreenDestination else AccountScreenDestination) {
                         popUpTo(LoginScreenDestination) {
                             inclusive = true
                         }

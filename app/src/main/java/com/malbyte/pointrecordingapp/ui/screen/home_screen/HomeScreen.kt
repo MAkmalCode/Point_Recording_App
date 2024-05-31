@@ -68,7 +68,9 @@ fun HomeScreen(
 ) {
     val context = LocalContext.current
     val listEmployee = homeViewModel.listEmployeeState.collectAsStateWithLifecycle()
+    val listAccount = homeViewModel.listAccountState.collectAsStateWithLifecycle()
     val insertState by homeViewModel.insertState.collectAsStateWithLifecycle()
+    val updateState by homeViewModel.updateState.collectAsStateWithLifecycle()
 
     val searchText by homeViewModel.searchText.collectAsState()
     val isSearching by homeViewModel.isSearching.collectAsState()
@@ -159,7 +161,7 @@ fun HomeScreen(
         ) {
 
 
-            listEmployee.value.DisplayResult(
+            listAccount.value.DisplayResult(
                 onLoading = {
                     Column(
                         modifier = Modifier.fillMaxSize(),
@@ -196,25 +198,25 @@ fun HomeScreen(
                                 content = {
 
                                     items(listEmployee.filter {
-                                        it.name!!.contains(
+                                        it.username!!.contains(
                                             searchText,
                                             true
                                         )
-                                    }) { employee ->
+                                    }) { account ->
                                         EmployeeItem(
-                                            employeeName = employee.name!!,
-                                            employeePosition = employee.position!!,
-                                            employeePoin = employee.poin!!,
+                                            employeeName = account.username!!,
+                                            employeePosition = account.position!!,
+                                            employeePoin = account.poin!!,
                                             delete = { visible ->
-                                                idState = employee.id
+                                                idState = account.id
                                                 showAllertDialog = visible
                                             },
                                             openBottomSheet = { visible, content ->
                                                 showBottomSheet = visible
-                                                nameState = employee.name
-                                                positionState = employee.position
-                                                poinState = employee.poin
-                                                idState = employee.id
+                                                nameState = account.username
+                                                positionState = account.position
+                                                poinState = account.poin
+                                                idState = account.id
                                                 bsContent = content
                                             }
                                         )
@@ -227,21 +229,21 @@ fun HomeScreen(
                             columns = GridCells.Fixed(2),
                             content = {
 
-                                items(listEmployee) { employee ->
+                                items(listEmployee) { account ->
                                     EmployeeItem(
-                                        employeeName = employee.name!!,
-                                        employeePosition = employee.position!!,
-                                        employeePoin = employee.poin!!,
+                                        employeeName = account.username!!,
+                                        employeePosition = account.position!!,
+                                        employeePoin = account.poin!!,
                                         delete = { visible ->
-                                            idState = employee.id
+                                            idState = account.id
                                             showAllertDialog = visible
                                         },
                                         openBottomSheet = { visible, content ->
                                             showBottomSheet = visible
-                                            nameState = employee.name
-                                            positionState = employee.position
-                                            poinState = employee.poin
-                                            idState = employee.id
+                                            nameState = account.username
+                                            positionState = account.position
+                                            poinState = account.poin
+                                            idState = account.id
                                             bsContent = content
                                         }
                                     )
@@ -269,7 +271,7 @@ fun HomeScreen(
                             confirmButton = {
                                 TextButton(
                                     onClick = {
-                                        homeViewModel.deleteEmployee(idState)
+                                        homeViewModel.deleteAccount(idState)
                                         showAllertDialog = false
                                     }) {
                                     Text(text = "Confirm")
@@ -302,12 +304,11 @@ fun HomeScreen(
                                     addPoin = addPoinState,
                                     poin = poinState,
                                     addButton = {
-
                                         if (addPoinState == 0){
                                             Toast.makeText(context, "Pelanggaran belum dipilih", Toast.LENGTH_SHORT).show()
                                             return@UpdateBottomSheet
                                         }
-                                        homeViewModel.updateEmployeePoin(
+                                        homeViewModel.updatePoinAccount(
                                             idState,
                                             poinState + addPoinState
                                         )
@@ -355,8 +356,8 @@ fun HomeScreen(
                                         homeViewModel.insertEmployee(employee)
 
                                         showBottomSheet = false
-                                    })
-
+                                    }
+                                )
                             }
                         }
                     }

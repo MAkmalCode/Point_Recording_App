@@ -36,10 +36,48 @@ class PoinRecordingRepositoryImpl(
             primaryKey = Employee::id
         ).flowOn(Dispatchers.IO)
 
+        employeeChannel.subscribe()
+
+        return Result.success(data)
+    }
+
+    override suspend fun getAccount(): Result<Flow<List<Account>>> {
+        val data = employeeChannel.postgresListDataFlow(
+            schema = "public",
+            table = "account",
+            primaryKey = Account::id
+        ).flowOn(Dispatchers.IO)
 
         employeeChannel.subscribe()
 
         return Result.success(data)
+    }
+
+    override fun updatePoinAccount(id: String, poin: Int): Flow<RequestState<Boolean>> {
+        return flow {
+            try {
+                client.auth.updateUser {
+                    data = buildJsonObject {
+                        put("poin", poin)
+                    }
+                }
+                emit(RequestState.Success(true))
+            } catch (e: Exception) {
+                emit(RequestState.Error(e.message.toString()))
+            }
+        }
+    }
+
+    override fun deleteAccount(userId: String): Flow<RequestState<Boolean>> {
+        return flow {
+            client.auth.importAuthToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN2anphb2J3dnhoZ3VkanFjcG9qIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTcxMTQyMjU4MCwiZXhwIjoyMDI2OTk4NTgwfQ.uKg8R0Aez9oYoTnu2ZS5CBrf-nayrUnCoZ6CKBhzYIM")
+            try {
+                client.auth.admin.deleteUser(uid = userId)
+                emit(RequestState.Success(true))
+            } catch (e: Exception) {
+                emit(RequestState.Error(e.message.toString()))
+            }
+        }
     }
 
     override suspend fun unsubscribeChannel() {
@@ -78,12 +116,8 @@ class PoinRecordingRepositoryImpl(
     override fun insertEmployee(employee: Employee): Flow<RequestState<Employee>> {
         return flow {
             try {
-
-                RequestState.Success(
-                    client.from("employee").insert(employee)
-                )
+                RequestState.Success(client.from("employee").insert(employee))
             } catch (e: Exception) {
-
                 RequestState.Error(e.message.toString())
             }
         }
@@ -122,6 +156,7 @@ class PoinRecordingRepositoryImpl(
                 data = buildJsonObject {
                     put("username", username)
                     put("position", position)
+                    put("poin", 0)
                 }
             }
             emit(RequestState.Success(true))
@@ -160,11 +195,12 @@ class PoinRecordingRepositoryImpl(
     override fun updateAccount(id: String, username: String): Flow<RequestState<Boolean>> = flow {
         try {
 
-            client.auth.updateUser {
+            client.auth.updateUser{
                 data = buildJsonObject {
                     put("username", username)
                 }
             }
+            LocalUser.username = username
             emit(RequestState.Success(true))
         } catch (e: Exception) {
             emit(RequestState.Error(e.message.toString()))

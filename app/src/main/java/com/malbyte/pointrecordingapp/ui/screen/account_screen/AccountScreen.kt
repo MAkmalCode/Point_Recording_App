@@ -235,12 +235,9 @@ fun AccountScreen(
                     Row(
                         modifier = Modifier
                             .weight(0.5f)
-                            .clickable {
-                                navigator.navigate(RegisterScreenDestination)
-                            }
+                            .clickable { navigator.navigate(RegisterScreenDestination) }
                             .background(MaterialTheme.colorScheme.surfaceVariant)
-                            .padding(10.dp)
-                            ,
+                            .padding(10.dp),
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
@@ -306,7 +303,6 @@ fun AccountScreen(
             onLoading = { /*TODO*/ },
             onSuccess = {
                 Toast.makeText(context, "Berhasil update", Toast.LENGTH_SHORT).show()
-                LocalUser.username = nameTF
             }
         ) {
             Toast.makeText(context, "Gagal update", Toast.LENGTH_SHORT).show()

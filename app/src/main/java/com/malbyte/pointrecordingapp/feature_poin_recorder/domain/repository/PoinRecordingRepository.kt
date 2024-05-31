@@ -1,6 +1,7 @@
 package com.malbyte.pointrecordingapp.feature_poin_recorder.domain.repository
 
 import com.malbyte.pointrecordingapp.feature_poin_recorder.data.data_source.local.model.PoinHistory
+import com.malbyte.pointrecordingapp.feature_poin_recorder.data.data_source.remote.model.Account
 import com.malbyte.pointrecordingapp.feature_poin_recorder.data.data_source.remote.model.Employee
 import com.rmaprojects.apirequeststate.RequestState
 import kotlinx.coroutines.flow.Flow
@@ -9,6 +10,9 @@ interface PoinRecordingRepository {
 
     // Supabase
     suspend fun getAllEmployee(): Result<Flow<List<Employee>>>
+    suspend fun getAccount(): Result<Flow<List<Account>>>
+    fun updatePoinAccount(id: String, poin: Int): Flow<RequestState<Boolean>>
+    fun deleteAccount(userId: String): Flow<RequestState<Boolean>>
     suspend fun unsubscribeChannel()
     fun updatePoin(id: String, poin: Int): Flow<RequestState<Employee>>
     fun insertEmployee(employee: Employee): Flow<RequestState<Employee>>

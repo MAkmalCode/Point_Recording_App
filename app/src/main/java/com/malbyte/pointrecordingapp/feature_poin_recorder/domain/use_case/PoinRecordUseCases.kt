@@ -1,6 +1,9 @@
 package com.malbyte.pointrecordingapp.feature_poin_recorder.domain.use_case
 
+import com.malbyte.pointrecordingapp.feature_poin_recorder.domain.use_case.account_use_case.DeleteAccountUseCase
+import com.malbyte.pointrecordingapp.feature_poin_recorder.domain.use_case.account_use_case.GetAllAccountUseCase
 import com.malbyte.pointrecordingapp.feature_poin_recorder.domain.use_case.account_use_case.UpdateAccountUseCase
+import com.malbyte.pointrecordingapp.feature_poin_recorder.domain.use_case.account_use_case.UpdatePoinAccountUseCase
 import com.malbyte.pointrecordingapp.feature_poin_recorder.domain.use_case.auth_use_case.SignInUseCase
 import com.malbyte.pointrecordingapp.feature_poin_recorder.domain.use_case.auth_use_case.SignUpUseCase
 import com.malbyte.pointrecordingapp.feature_poin_recorder.domain.use_case.employee_use_case.DeleteEmployeeUseCase
@@ -21,5 +24,8 @@ data class PoinRecordUseCases(
     val deleteHistoryUseCase: DeleteHistoryUseCase,
     val signUpUseCase: SignUpUseCase,
     val signInUseCase: SignInUseCase,
-    val updateAccountUseCase: UpdateAccountUseCase
+    val updateAccountUseCase: UpdateAccountUseCase,
+    val getAllAccountUseCase: GetAllAccountUseCase,
+    val deleteAccountUseCase: DeleteAccountUseCase,
+    val updatePoinAccountUseCase: UpdatePoinAccountUseCase
 )

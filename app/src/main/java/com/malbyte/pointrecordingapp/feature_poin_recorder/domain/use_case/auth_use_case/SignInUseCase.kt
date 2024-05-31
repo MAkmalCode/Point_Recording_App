@@ -7,7 +7,6 @@ import kotlinx.coroutines.flow.Flow
 class SignInUseCase(
     private val repository: PoinRecordingRepository
 ) {
-
     operator fun invoke(email: String, password: String): Flow<RequestState<Boolean>> {
         return repository.signIn(email, password)
     }
